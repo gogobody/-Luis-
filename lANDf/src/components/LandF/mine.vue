@@ -5,7 +5,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-    export default {
-        props: []
-    }
+  import header from './components/headers.vue'
+  export default {
+    props: [],
+
+  }
 </script>
