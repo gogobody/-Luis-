@@ -9,7 +9,7 @@
                 </div>
             </div>
         </scroller>
-        <tabs @openSearch="gosearch" @lunch="golunch"></tabs>
+        <tabs @openSearch="gosearch" @lunch="golunch" @mine="gomine"></tabs>
 
         <!--<popup v-model="search" height="100%">-->
             <!--<popup-header left-text="返回" right-text="关闭"-->
@@ -104,6 +104,9 @@
             },
             golunch(){
                 this.$router.push({name:'landfLunch'})
+            },
+            gomine(){
+                this.$router.push({name:'landfMine'})
             }
 
         },

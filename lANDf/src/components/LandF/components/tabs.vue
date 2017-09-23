@@ -17,7 +17,7 @@
                 </span>
             </flexbox-item>
             <flexbox-item :span="1/4">
-                <div class="landf-tabs-me">
+                <div class="landf-tabs-me" @click="gomine">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-wo"></use>
                     </svg>
@@ -83,6 +83,9 @@
             },
             golunch:function(){
                 this.$emit('lunch')
+            },
+            gomine:function () {
+                this.$emit('mine')
             }
         }
     }
