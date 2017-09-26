@@ -84,11 +84,12 @@
             infinite(done) {
                 setTimeout(
                         () => {
-                            this.$ajax.get(this.host+'/static/data.json').then(function (res) {
-//                                this.items.push(...res.items)
-                                console.log((res.data))
-                                return
-                            }).catch(function (e) {
+                            this.$ajax.get('../../../static/data.json').then(
+                                (res) => {
+                                    this.items.push(...res.data.items);
+                                    done();
+                                    return
+                                }).catch( (e) => {
                                 console.error(e)
                                 done(true);
                                 this.infinite = undefined;

@@ -29,7 +29,8 @@
             </grid-item>
         </grid>
         <popup :value="popupmine" height="100%">
-            <popup-header left-text='<' right-text="x" @on-click-left="openmine" @on-click-right="openmine"></popup-header>
+            <popup-header left-text='返回'
+                          right-text="关闭" @on-click-left="openmine" @on-click-right="openmine"></popup-header>
 
         </popup>
     </div>

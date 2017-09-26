@@ -9,8 +9,9 @@ Router.prototype.goBack = function () {
     this.isBack = true
     window.history.go(-1)
 }
-Vue.prototype.$ajax = axios
+Vue.prototype.$ajax = axios;
 export default new Router({
+    mode: 'history',
     routes: [
         {
             path: '/',
