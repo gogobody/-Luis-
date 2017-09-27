@@ -5,7 +5,7 @@ import mine from '../mine.vue'
 
 export default [
     {
-        path: '/landf',
+        path: '/',
         name: 'landf',
         component:index,
         children: []

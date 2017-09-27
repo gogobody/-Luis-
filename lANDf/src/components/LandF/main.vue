@@ -5,7 +5,7 @@
             <div class="landf-container">
                 <headers :imgUrl="img" height='180px' :search="true" @openSearch="gosearch"></headers>
                 <div v-for="item in items">
-                    <items :user="item"></items>
+                    <items :user="item" @click.native="itemdetail(item.id)"></items>
                 </div>
             </div>
         </scroller>
@@ -53,6 +53,7 @@
                 img: img,
                 items: [
                     {
+                        id:1,
                         username: "一个名字很长的测试永华啊啊啊啊啊啊啊啊啊啊啊啊啊",
                         headimg: require("../../assets/landf/head.jpg"),
                         createtime: "2017-09-06 23:54",
@@ -64,6 +65,7 @@
 
                     },
                     {
+                        id:2,
                         username: "一个名字很长的测试永华啊啊啊啊啊啊啊啊啊啊啊啊啊",
                         headimg: require("../../assets/landf/head.jpg"),
                         createtime: "2017-09-06 23:54",
@@ -88,12 +90,12 @@
                                 (res) => {
                                     this.items.push(...res.data.items);
                                     done();
-                                    return
+//                                    return
                                 }).catch( (e) => {
                                 console.error(e)
                                 done(true);
                                 this.infinite = undefined;
-                                return;
+//                                return;
                             });
 
                         }, 1000);
@@ -108,6 +110,9 @@
             },
             gomine(){
                 this.$router.push({name:'landfMine'})
+            },
+            itemdetail(id){
+                console.log(id)
             }
 
         },

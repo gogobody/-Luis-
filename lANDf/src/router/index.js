@@ -8,10 +8,18 @@ Vue.use(Router)
 Router.prototype.goBack = function () {
     this.isBack = true
     window.history.go(-1)
+};
+let base;
+if(process.env.NODE_ENV === "production"){
+    base = "/test/";
+}else {
+    base = "/"
 }
+
 Vue.prototype.$ajax = axios;
 export default new Router({
     mode: 'history',
+    base:base,
     routes: [
         {
             path: '/',

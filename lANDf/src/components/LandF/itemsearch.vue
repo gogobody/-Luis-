@@ -33,6 +33,7 @@
     .search-bottom-img {
         position: absolute;
         bottom: 0;
+        height: 150px;
     }
     .search-bottom-img img {
         width: 100%;
