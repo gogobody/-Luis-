@@ -1,7 +1,7 @@
 <template>
     <div class="landf">
         <scroller
-        :on-infinite="infinite">
+        :on-infinite="infinite" ref="scroller">
             <div class="landf-container">
                 <headers :imgUrl="img" height='180px' :search="true" @openSearch="gosearch"></headers>
                 <div v-for="item in items">
@@ -44,6 +44,7 @@
     import img from "../../assets/landf/landf-header.jpeg"
     import Tabs from "./components/tabs.vue"
     import {PopupHeader ,Popup } from 'vux'
+    import VueScroller from 'vue-scroller'
 
     export default {
         data() {
@@ -92,7 +93,7 @@
                                     done();
 //                                    return
                                 }).catch( (e) => {
-                                console.error(e)
+                                console.error(e);
                                 done(true);
                                 this.infinite = undefined;
 //                                return;
@@ -112,7 +113,14 @@
                 this.$router.push({name:'landfMine'})
             },
             itemdetail(id){
-                console.log(id)
+                let scroller = this.$refs.scroller;
+                console.log(scroller.getPosition());
+                this.$router.push({
+                    name:'landfitemdetail',
+                    params:{
+                        id:id
+                    }
+                })
             }
 
         },

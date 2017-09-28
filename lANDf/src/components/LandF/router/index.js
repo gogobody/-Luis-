@@ -2,6 +2,7 @@ import index from '../main.vue'
 import itemsearch from '../itemsearch.vue'
 import lunch from '../lunch.vue'
 import mine from '../mine.vue'
+import detail from '../detail.vue'
 
 export default [
     {
@@ -23,6 +24,10 @@ export default [
         path: '/landf/mine',
         name: 'landfMine',
         component: mine
-  }
+    },{
+        path:'/landf/:id',
+        name:'landfitemdetail',
+        component:detail
+    }
 
 ]
