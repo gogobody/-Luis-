@@ -55,6 +55,7 @@
         border-radius: 25px;
         background-color: dimgrey;
         padding: 6px 23px;
+        padding-right: 34px;;
     }
     .landf-tabs-me{
         text-align: center;

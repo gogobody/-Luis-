@@ -2,14 +2,14 @@
     <div class="items">
         <div class="header">
             <flexbox :gutter="0">
-                <flexbox-item :span="0.82">
+                <flexbox-item :span="0.83">
                     <flexbox :gutter="0">
                         <flexbox-item :span="1/6">
                             <div class="head-img">
                                 <img :src="user.headimg"/>
                             </div>
                         </flexbox-item>
-                        <flexbox-item :span="0.745">
+                        <flexbox-item :span="0.845">
                             <div class="name-panel">
                                 <flexbox :gutter="4" direction="column ">
                                     <flexbox-item style="width: 100%">
@@ -46,10 +46,10 @@
                 <img :src="user.img"/>
             </div>
             <div class="item-desc">
-                <div class="item-desc-text">{{user.desc}}</div>
+                <div class="item-desc-text">{{user.name}}&nbsp;{{user.desc}}</div>
             </div>
         </div>
-        <div class="footer">
+        <div class="footer" v-if="user.place">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-place"></use>
             </svg>
@@ -148,7 +148,7 @@
 
 </style>
 <script type="text/ecmascript-6">
-    import {Flexbox,FlexboxItem} from 'vux'
+    import {Flexbox,FlexboxItem } from 'vux'
     import {Icon} from 'vux'
 
     export default {

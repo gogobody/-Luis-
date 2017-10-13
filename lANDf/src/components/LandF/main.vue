@@ -1,14 +1,31 @@
 <template>
     <div class="landf">
-        <scroller
-        :on-infinite="infinite" ref="scroller">
-            <div class="landf-container">
-                <headers :imgUrl="img" height='180px' :search="true" @openSearch="gosearch"></headers>
-                <div v-for="item in items">
-                    <items :user="item" @click.native="itemdetail(item.id)"></items>
+            <scroller
+            :on-infinite="infinite" ref="scroller">
+                <div class="landf-container">
+                    <headers :imgUrl="img" height='180px' :search="true" @openSearch="gosearch"></headers>
+                    <group gutter="5px">
+
+                        <cell>
+                            <div slot="title" class="gonggao">
+                                <my-icon name="#icon-gonggao"></my-icon>
+                                <span>公告：</span>
+                            </div>
+                            <marquee :interval="5000">
+                                <marquee-item>欢迎加入虎溪失物招领群:118718555</marquee-item>
+                                <marquee-item>欢迎加入爱心社失物招领群:392452095</marquee-item>
+                                <marquee-item>欢迎使用智能失物招领平台~</marquee-item>
+
+                            </marquee>
+                        </cell>
+                    </group>
+                    <div v-for="item in items">
+                        <items :user="item" @click.native="itemdetail(item.id,item.state)"></items>
+                    </div>
                 </div>
-            </div>
-        </scroller>
+
+            </scroller>
+
         <tabs @openSearch="gosearch" @lunch="golunch" @mine="gomine"></tabs>
 
         <!--<popup v-model="search" height="100%">-->
@@ -17,6 +34,7 @@
             <!--</popup-header>-->
 
         <!--</popup>-->
+
     </div>
 </template>
 <style lang="less">
@@ -37,66 +55,81 @@
     .weui-search-bar{
         /*background: white !important;*/
     }
+    .weui-cells.vux-no-group-title {
+        .vux-cell-bd.vux-cell-primary{
+            flex: 0.5;
+        }
+        .weui-cell__ft {
+            text-align: left;
+        }
+    }
+
+    /*.vux-marquee.tongzhi {*/
+        /*margin-top: 3px;*/
+        /*background-color: white;*/
+        /*!*height: 50px;*!*/
+        /*.vux-marquee-box{*/
+            /*padding-left: 8px;*/
+        /*}*/
+    /*}*/
 </style>
 <script type="text/ecmascript-6">
     import Headers from "./components/headers.vue"
     import Items from "./components/items.vue"
-    import img from "../../assets/landf/landf-header.jpeg"
     import Tabs from "./components/tabs.vue"
-    import {PopupHeader ,Popup } from 'vux'
+    import MyIcon from "./components/myIcon.vue"
+    import {PopupHeader ,Popup, Marquee, Group,Cell,MarqueeItem } from 'vux'
     import VueScroller from 'vue-scroller'
+    import mixin from './utils/mixin'
+    import './utils/global.js'
 
     export default {
+        mixins:[mixin],
+        route:{
+            canReuse:()=>{
+                return true;
+            },
+            canActivate:()=>{
+                return true;
+            }
+        },
         data() {
             return {
                 search:false,//popup 开关
                 searchform:"",//搜索表单
-                img: img,
+                img: "http://osp68kn7c.bkt.clouddn.com//landf/landf-header.jpeg",
                 items: [
-                    {
-                        id:1,
-                        username: "一个名字很长的测试永华啊啊啊啊啊啊啊啊啊啊啊啊啊",
-                        headimg: require("../../assets/landf/head.jpg"),
-                        createtime: "2017-09-06 23:54",
-                        state: false,//true 为招领
-                        type:"卡证",
-                        img: require("../../assets/landf/card.jpg"),
-                        desc: "测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字",
-                        place: "测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文"
-
-                    },
-                    {
-                        id:2,
-                        username: "一个名字很长的测试永华啊啊啊啊啊啊啊啊啊啊啊啊啊",
-                        headimg: require("../../assets/landf/head.jpg"),
-                        createtime: "2017-09-06 23:54",
-                        state: true,//true 为招领
-                        type:"卡证",
-//                        img:require("../../assets/card.jpg"),
-                        desc: "测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字",
-                        place: "测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文"
-
-                    }
-                ]
+                ],
             }
         },
         components: {
 
-            Headers, Items,Tabs,PopupHeader,Popup},
+            Headers, Items,Tabs,PopupHeader,Popup, Marquee,  Group,Cell,MarqueeItem,MyIcon
+        },
         methods: {
             infinite(done) {
                 setTimeout(
                         () => {
-                            this.$ajax.get('../../../static/data.json').then(
-                                (res) => {
-                                    this.items.push(...res.data.items);
+                            let param = new FormData();
+                            param.append('cnt',this.count);
+                            this.$ajax.post(this.host+'/api/latestinfo',param).then((res)=>{
+                                if(res.data.status){
+                                    let data_ = res.data.data;
+                                    if(data_.length === 0){
+                                        data(true)
+                                    }
+                                    this.count+=5;
+                                    this.items.push(...res.data.data);
                                     done();
-//                                    return
-                                }).catch( (e) => {
+                                }else {
+                                    this.$vux.toast.text(res.data.msg, 'middle');
+                                    done(true);
+                                }
+                            }).catch( (e) => {
                                 console.error(e);
                                 done(true);
                                 this.infinite = undefined;
-//                                return;
+
                             });
 
                         }, 1000);
@@ -104,30 +137,67 @@
 //                done(true)
             },//无限加载
             gosearch(){
-                this.$router.push({name:'landfSearch'})
+                this.position = this.$refs.scroller.getPosition();
+                let itemname = "None";
+                this.$router.push({
+                    name:'landfSearch',
+                    params:{
+                        itemname:itemname,
+                        lost:'lost'
+                    }
+                })
             },
             golunch(){
-                this.$router.push({name:'landfLunch'})
+                if(is_login) {
+                    this.position = this.$refs.scroller.getPosition();
+                    this.$router.push({
+                        name: 'landfLunch'
+                    })
+                }else {
+                    this.checklogin(()=>{
+                        if(is_login) {
+                        this.position = this.$refs.scroller.getPosition();
+                        this.$router.push({
+                            name: 'landfLunch'
+                        })
+                    }},()=>{});
+
+                }
             },
             gomine(){
-                this.$router.push({name:'landfMine'})
+                if(is_login){
+                    this.position = this.$refs.scroller.getPosition();
+                    this.$router.push({name:'landfMine'})
+                }else {
+                    this.checklogin(()=>{
+                        if(is_login){
+                            this.position = this.$refs.scroller.getPosition();
+                            this.$router.push({name:'landfMine'})
+                        }
+                    },()=>{});
+                }
             },
-            itemdetail(id){
-                let scroller = this.$refs.scroller;
-                console.log(scroller.getPosition());
+            itemdetail(id,state){
+                this.position = this.$refs.scroller.getPosition();
                 this.$router.push({
                     name:'landfitemdetail',
                     params:{
-                        id:id
+                        id:id,
+                        state:state
                     }
                 })
             }
 
         },
         created() {
-//            this.$ajax.get(this.host+'/static/data.json').then((res)=>{
-//                alert(res)
-//            })
+            this.count = 0
+        },
+        activated(){
+            this.$nextTick(() => {
+                this.$refs.scroller.resize();
+                this.$refs.scroller.scrollTo(this.position.left===undefined?0:this.position.left,this.position.top,false);
+            })
+
         }
     }
 </script>

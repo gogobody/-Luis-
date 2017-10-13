@@ -1,7 +1,9 @@
 <template>
     <div>
         <transition :name="transitionName">
-            <router-view class="child-view"></router-view>
+            <keep-alive include="landf">
+                <router-view  class="child-view"></router-view>
+            </keep-alive>
         </transition>
     </div>
 </template>
@@ -10,7 +12,7 @@
     export default {
         data () {
             return {
-                transitionName: 'slide-left'
+                transitionName: 'slide-left',
             }
         },
         beforeRouteUpdate (to, from, next) {

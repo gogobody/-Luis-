@@ -1,9 +1,9 @@
 <template>
-    <div class="my-icon">
+    <span class="my-icon">
         <svg class="icon" aria-hidden="true">
             <use :xlink:href="name"></use>
         </svg>
-    </div>
+    </span>
 </template>
 <style>
     /*.my-icon {*/
